@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,11 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  encodedData = '';
+  QRSCANNED_DATA: string;
+  isOn = false;
+  scannedData: {};
+  
+  constructor(public qrScanCtrl: QRScanner) {}
 
 }
