@@ -6,15 +6,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">QR App</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-card class="welcome-card">
+    <img src="/assets/scan.jpeg" alt="" />
+    <ion-card-header>
+      <ion-card-subtitle>Get Started</ion-card-subtitle>
+      <ion-card-title>Read the user manual</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Scan QR to open user manual in a web page.</p>
+    </ion-card-content>
+    <ion-button expand='block' margin (click)="goToBarcodeScan()">Click to scan a QR Code</ion-button>
+    <div *ngIf="scannedData">
+      <p>
+        Scanned Code Text : <b>{{ scannedData["text"] }}</b>
+      </p>
+      <p>
+        Scanned Code Format : <b>{{ scannedData["format"] }}</b>
+      </p>
+    </div>
+  </ion-card>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Generate QR</ion-card-subtitle>
+      <ion-card-title>Enter Value to Create QR code</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input type="text" [(ngModel)]="encodedData"></ion-input>
+      <ion-button (click)="goToCreateCode()">
+        Create QR
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
