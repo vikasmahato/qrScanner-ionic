@@ -16,7 +16,7 @@
     <ion-card-content>
       <p>Scan QR to open user manual in a web page.</p>
     </ion-card-content>
-    <ion-button expand='block' margin (click)="goToBarcodeScan()">Click to scan a QR Code</ion-button>
+    <ion-button expand='block' margin (click)="goToQrScan()">Click to scan a QR Code</ion-button>
     <div *ngIf="scannedData">
       <p>
         Scanned Code Text : <b>{{ scannedData["text"] }}</b>
