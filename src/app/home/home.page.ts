@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 import { ToastController } from '@ionic/angular';
-
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +14,14 @@ export class HomePage {
   QRSCANNED_DATA: string;
   isOn = false;
   scannedData: {};
+  scanSub: any;
 
-  constructor(public qrScanCtrl: QRScanner, public toastController: ToastController) {}
+  constructor(public qrScanCtrl: QRScanner, public toastController: ToastController, public platform: Platform) {
+    this.platform.backButton.subscribeWithPriority(0, () => {
+      document.getElementsByTagName('body')[0].style.opacity = '1';
+      this.scanSub.unsubscribe();
+    });
+  }
 
   async presentToast(text: string) {
     const toast = await this.toastController.create({
@@ -32,22 +38,27 @@ export class HomePage {
         if (status.authorized) {
           // camera permission was granted
           this.isOn = true;
+          this.qrScanCtrl.show();
 
+          this.scanSub = document.getElementsByTagName('body')[0].style.opacity = '0';
 
           // start scanning
-          const scanSub = this.qrScanCtrl.scan().subscribe((text: string) => {
+           this.scanSub = this.qrScanCtrl.scan().subscribe((text: string) => {
+            document.getElementsByTagName('body')[0].style.opacity = '1';
             console.log('Scanned something', text);
             this.presentToast('Scanned something' + text);
+            
             this.isOn = false;
 
             this.QRSCANNED_DATA = text;
-            if (this.QRSCANNED_DATA !== '') {
-              this.closeScanner();
-              scanSub.unsubscribe();
-            }
 
+            this.qrScanCtrl.hide();
+            this.scanSub.unsubscribe();
+            
+          }, (err) => {
+            this.presentToast(JSON.stringify(err));
           });
-          this.qrScanCtrl.show();
+          
 
         } else if (status.denied) {
           console.log('camera permission denied');
