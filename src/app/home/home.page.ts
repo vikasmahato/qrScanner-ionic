@@ -32,7 +32,7 @@ export class HomePage {
   }
 
   goToQrScan() {
-    this.presentToast("goToQrScan");
+    //this.presentToast("goToQrScan");
     this.qrScanCtrl.prepare()
       .then((status: QRScannerStatus) => {
         if (status.authorized) {
